@@ -1,0 +1,29 @@
+{
+  "name": "trireme-support",
+  "version": "1.0.0",
+  "description": "Internal functions that are only available on the Trireme runtime",
+  "main": "index.js",
+  "scripts": {
+    "test": "node_modules/mocha/bin/mocha -R spec test/nodetests.js",
+    "trireme-test": "trireme node_modules/mocha/bin/mocha -R spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/apigee/trireme-support"
+  },
+  "keywords": [
+    "Trireme",
+    "Java",
+    "JVM",
+    "Node"
+  ],
+  "author": "Greg Brail <greg@apigee.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/apigee/trireme-support/issues"
+  },
+  "homepage": "https://github.com/apigee/trireme-support",
+  "dependencies": {
+    "mocha": "^2.0.1"
+  }
+}
