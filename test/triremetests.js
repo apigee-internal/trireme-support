@@ -1,5 +1,7 @@
 var assert = require('assert');
+var http = require('http');
 var path = require('path');
+var util = require('util');
 
 var trireme = require('..');
 
@@ -68,5 +70,58 @@ describe('Interface tests', function() {
     assert.throws(function() {
       trireme.loadJars('notfound.jar');
     });
+  });
+});
+
+describe('HTTP Server tests', function() {
+  var PORT = 44444;
+  var svr;
+
+  // Start an HTTP server here in the process
+  before(function(done) {
+    svr = http.createServer(function(req, resp) {
+      resp.end('Hello, World!');
+    });
+    svr.listen(PORT, done);
+  });
+  after(function(done) {
+    svr.close(done);
+  });
+
+  // Make sure that it is functioning normally
+  it('Verify server', function(done) {
+    http.get(util.format('http://localhost:%d/', PORT), function(res) {
+      var body = '';
+      res.setEncoding('utf8');
+      res.on('data', function(chunk) {
+        body += chunk;
+      });
+      res.on('end', function() {
+        if (body === 'Hello, World!') {
+          done();
+        } else {
+          done(new Error('Incorrect response body: %s', body));
+        }
+      });
+    }).on('error', function(e) {
+      done(e);
+    });
+  });
+
+  // Call a Java module that will call it from inside a thread pool
+  it('Call server from Java code', function(done) {
+    var testMod = require('test-jar-module');
+    testMod.httpGet(util.format('http://localhost:%d/', PORT),
+      function(err, result) {
+        if (err) {
+          done(err);
+        } else if (result === 'Hello, World!') {
+          done();
+        } else {
+          done(new Error(util.format(
+            'Result %s does not match expected', result)));
+        }
+      }
+    );
   });
 });

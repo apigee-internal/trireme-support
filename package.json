@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "node_modules/mocha/bin/mocha -R spec test/nodetests.js",
-    "trireme-test": "trireme node_modules/mocha/bin/mocha -R spec"
+    "trireme-test": "trireme node_modules/mocha/bin/mocha -R spec test/triremetests.js"
   },
   "repository": {
     "type": "git",
@@ -23,7 +23,7 @@
     "url": "https://github.com/apigee/trireme-support/issues"
   },
   "homepage": "https://github.com/apigee/trireme-support",
-  "dependencies": {
+  "devDependencies": {
     "mocha": "^2.0.1"
   }
 }
