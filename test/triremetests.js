@@ -71,6 +71,14 @@ describe('Interface tests', function() {
       trireme.loadJars('notfound.jar');
     });
   });
+  it('Result does not contain non-printable classes', function() {
+    var result = trireme.loadJars([
+      path.join(__dirname, 'resources/testjar.jar'),
+      path.join(__dirname, 'resources/depjar.jar')
+    ]);
+    // Ensure that this does not throw
+    util.format(result);
+  });
 });
 
 describe('HTTP Server tests', function() {

@@ -22,6 +22,9 @@
 
 'use strict';
 
+var semver = require('semver');
+var util = require('util');
+
 var triremeAvailable = false;
 var binding;
 
@@ -42,6 +45,11 @@ function loadJars(j) {
     throw new Error(
       'JAR file loading is only supported on the Trireme runtime');
   }
+  if (!semver.satisfies(binding.interfaceVersion, '>=1.0.0')) {
+    throw new Error(
+      util.format('Trireme version %s is not compatible with this function',
+        binding.interfaceVersion));
+  }
 
   var jarNames;
 
@@ -54,6 +62,14 @@ function loadJars(j) {
       'jar file must be a file name or a list of file names');
   }
 
-  binding.loadJars(jarNames);
+  var classloader = binding.loadJars(jarNames);
+
+  // Return the resulting classloader as a non-enumerable property inside an object
+  var result = {};
+  Object.defineProperty(result, 'classloader', {
+    value: classloader,
+    enumerable: false
+  });
+  return result;
 }
 module.exports.loadJars = loadJars;

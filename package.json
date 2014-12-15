@@ -25,5 +25,8 @@
   "homepage": "https://github.com/apigee/trireme-support",
   "devDependencies": {
     "mocha": "^2.0.1"
+  },
+  "dependencies": {
+    "semver": "~4.0.0"
   }
 }
